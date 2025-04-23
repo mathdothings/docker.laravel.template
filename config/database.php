@@ -93,7 +93,24 @@ return [
             'charset' => env('DB_CHARSET', 'utf8'),
             'prefix' => '',
             'prefix_indexes' => true,
-            'search_path' => 'public',
+            'search_path' => env('DB_SCHEMA'),
+            'public',
+            'sslmode' => 'prefer',
+        ],
+
+        'pgsql_aquarius' => [
+            'driver' => env('DB_CONNECTION_AQUARIUS'),
+            'url' => env('DB_URL'),
+            'host' => env('DB_HOST_AQUARIUS'),
+            'port' => env('DB_PORT_AQUARIUS'),
+            'database' => env('DB_DATABASE_AQUARIUS'),
+            'username' => env('DB_USERNAME_AQUARIUS'),
+            'password' => env('DB_PASSWORD_AQUARIUS'),
+            'charset' => env('DB_CHARSET', 'utf8'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => env(' DB_SCHEMA_AQUARIUS'),
+            'public',
             'sslmode' => 'prefer',
         ],
 
@@ -148,7 +165,6 @@ return [
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
             'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
-            'persistent' => env('REDIS_PERSISTENT', false),
         ],
 
         'default' => [

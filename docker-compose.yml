@@ -11,17 +11,43 @@ services:
             - laravel_network
 
     # PostgreSQL Database
-    db:
-        image: postgres:latest
-        container_name: laravel_db
+    # db:
+    #     image: postgres:latest
+    #     container_name: laravel_db
+    #     environment:
+    #         POSTGRES_DB: laravel_db
+    #         POSTGRES_USER: laravel_user
+    #         POSTGRES_PASSWORD: secret
+    #     volumes:
+    #         - postgres_data:/var/lib/postgresql/data
+    #     networks:
+    #         - laravel_network
+
+    pgsql:
+        container_name: pgsql
+        image: "postgres:17"
+        ports:
+            - "${FORWARD_DB_PORT:-5432}:5432"
         environment:
-            POSTGRES_DB: laravel_db
-            POSTGRES_USER: laravel_user
-            POSTGRES_PASSWORD: secret
+            PGPASSWORD: "${DB_PASSWORD:-secret}"
+            POSTGRES_DB: "${DB_DATABASE}"
+            POSTGRES_USER: "${DB_USERNAME}"
+            POSTGRES_PASSWORD: "${DB_PASSWORD:-secret}"
         volumes:
             - postgres_data:/var/lib/postgresql/data
         networks:
             - laravel_network
+        healthcheck:
+            test:
+                - CMD
+                - pg_isready
+                - "-q"
+                - "-d"
+                - "${DB_DATABASE}"
+                - "-U"
+                - "${DB_USERNAME}"
+            retries: 3
+            timeout: 5s
 
     # Nginx Web Server
     webserver:

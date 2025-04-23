@@ -1,5 +1,4 @@
 services:
-    # Laravel Application
     app:
         build:
             context: .
@@ -9,19 +8,6 @@ services:
             - .:/var/www
         networks:
             - laravel_network
-
-    # PostgreSQL Database
-    # db:
-    #     image: postgres:latest
-    #     container_name: laravel_db
-    #     environment:
-    #         POSTGRES_DB: laravel_db
-    #         POSTGRES_USER: laravel_user
-    #         POSTGRES_PASSWORD: secret
-    #     volumes:
-    #         - postgres_data:/var/lib/postgresql/data
-    #     networks:
-    #         - laravel_network
 
     pgsql:
         container_name: pgsql
@@ -49,7 +35,6 @@ services:
             retries: 3
             timeout: 5s
 
-    # Nginx Web Server
     webserver:
         image: nginx:latest
         container_name: laravel_webserver
@@ -67,7 +52,6 @@ services:
         networks:
             - laravel_network
 
-    # Certbot for SSL Certificates
     certbot:
         image: certbot/certbot:latest
         container_name: laravel_certbot
@@ -81,11 +65,9 @@ services:
         networks:
             - laravel_network
 
-# Volumes
 volumes:
     postgres_data:
 
-        # Networks
 networks:
     laravel_network:
         driver: bridge
